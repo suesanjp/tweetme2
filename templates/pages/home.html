@@ -16,7 +16,7 @@ this is amazing!!!!
   <div class="col-md-4 mx-auto col-10">
     <form class="form" id="tweet-create-form" method="POST" action="/create-tweet/">
       {% csrf_token %}
-      <input type="hidden" value="/ " name="next" />
+      <input type="hidden" value="/not-a-real-page " name="next" />
       <textarea class="form-control" name="content" placeholder="Your tweet..."></textarea>
       <button type="submit" class="btn btn-primary">Tweet</button>
     </form>
@@ -31,7 +31,17 @@ this is amazing!!!!
 
   function handleTweetCreateFormDidSubmit(event) {
     event.preventDefault()
-    console.log(event)
+    const myForm = event.target
+    const myFormData = new FormData(myForm)
+    const url = myForm.getAttribute("action")
+    const method = myForm.getAttribute("method")
+    const xhr = new XMLHttpRequest()
+    xhr.open(method, url)
+    xhr.onload = function() {
+      const serverResponse = xhr.response
+      console.log(serverResponse)
+    }
+    xhr.send(myFormData)
   }
 
   const tweetCreateFormEl = document.getElementById("tweet-create-form")
